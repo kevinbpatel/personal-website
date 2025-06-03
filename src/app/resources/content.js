@@ -56,6 +56,11 @@ const home = {
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
   headline: <>Kevin Patel</>,
+  featured: {
+    display: true,
+    title: <>Recent project: <strong className="ml-4">FlyNext</strong></>,
+    href: "/work/flynext",
+  },
   subline: (
     <>
       Front-End Developer. Brampton, Ontario
@@ -92,62 +97,40 @@ const about = {
     ),
   },
   work: {
-    display: false, // set to false to hide this section
+    display: true, // set to false to hide this section
     title: "Work Experience",
     experiences: [
       {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
+        company: "MathMatize",
+        timeframe: "Oct. 2021 - Mar. 2022",
+        role: "Front-End Developer",
         achievements: [
           <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
+            Developed and designed landing pages and mockups for Mathmatize, an educational platform used by tens of thousands of students and incorporated into hundreds of classrooms across North America
           </>,
           <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
+            Quickly learned HTML and CSS to develop and launch responsive landing pages under tight deadlines, while balancing academic responsibilities.
           </>,
         ],
         images: [
           // optional: leave the array empty if you don't want to display images
           {
-            src: "/images/projects/project-01/cover-01.jpg",
+            src: "/images/projects/mathmatize/landing-page.png",
             alt: "Once UI Project",
             width: 16,
             height: 9,
           },
         ],
       },
-      {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
-        achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
-        ],
-        images: [],
-      },
     ],
   },
   studies: {
-    display: false, // set to false to hide this section
+    display: true, // set to false to hide this section
     title: "Studies",
     institutions: [
       {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
-      },
-      {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
+        name: "University of Toronto Mississauga",
+        description: <>Honors Bachelor of Science in Computer Science</>,
       },
     ],
   },
