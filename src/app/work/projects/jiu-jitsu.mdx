@@ -1,0 +1,80 @@
+---
+title: "Jiu-Jitsu Match Auto Scoring with Computer Vision"
+publishedAt: "2024-12-15"
+summary: "Computer vision pipeline for automatically detecting combat positions and scoring BJJ matches. Fine-tuned ViTPose on Harmony4D dataset achieving 0.649 AP accuracy."
+images:
+  - "/images/projects/jiu-jitsu-auto-scorer/sample-application.jpg"
+  - "/images/projects/jiu-jitsu-auto-scorer/bjj-positions.jpg"
+  - "/images/projects/jiu-jitsu-auto-scorer/pipeline-diagram.jpg"
+link: "https://github.com/jiu-jitsu-auto-scoring"
+---
+
+## What We Built
+
+An automated scoring system for Brazilian Jiu-Jitsu matches using computer vision. The pipeline detects athletes, estimates their poses, tracks them across frames, classifies combat positions, and applies rule-based scoring - all to reduce referee bias and provide objective match evaluation.
+
+Built on previous research by Hudovernik and Skočaj, we improved the pose estimation accuracy by fine-tuning models on the Harmony4D dataset, specifically designed for close human interactions common in grappling sports.
+
+## The Challenge
+
+BJJ scoring typically requires highly experienced referees (often black belts) to accurately identify complex positions where athletes' bodies are heavily intertwined and occluded. This creates potential for bias and inconsistency. Our goal was to automate this process while handling the unique challenges of grappling scenarios.
+
+## Technical Approach
+
+### Pipeline Architecture
+1. **Person Detection**: Deformable DETR for detecting athletes in video frames
+2. **Pose Estimation**: ViTPose for keypoint detection in occluded scenarios  
+3. **Pose Tracking**: Temporal tracking to maintain athlete identities across frames
+4. **Position Classification**: Combat position recognition from pose sequences
+5. **Rule-based Scoring**: Automated point assignment based on BJJ rules
+
+### Key Innovations
+- **Harmony4D Fine-tuning**: Used the 250GB Harmony4D dataset containing close human interactions instead of standard pose datasets
+- **ViTPose Optimization**: Leveraged transformer-based architecture for better global context understanding
+- **PCT Exploration**: Investigated Pose as Compositional Tokens for representing poses as discrete, semantically meaningful parts
+
+## Results & Performance
+
+Successfully fine-tuned ViTPose on a subset of Harmony4D, achieving **0.649 AP and 0.702 AR** - approaching the performance reported in previous research. This represented a significant improvement over standard pose estimation models when applied to grappling scenarios.
+
+The transformer-based approach proved particularly effective at handling occlusions and overlapping limbs common in BJJ positions.
+
+## Technical Challenges
+
+**Data Scale**: The Harmony4D dataset (250GB compressed) created substantial storage and processing difficulties, requiring careful resource management.
+
+**GPU Constraints**: Frequent memory limitations during training required process restarts and constrained batch sizes, slowing development.
+
+**Occlusion Handling**: The constant intertwining of athletes made standard pose tracking models struggle with identity swaps and missing keypoints.
+
+**Limited Documentation**: Integrating D-DETR and ViTPose required significant debugging due to sparse documentation and dependency conflicts.
+
+## Tech Stack
+
+- **ViTPose**: Transformer-based pose estimation with vision transformer backbone
+- **Deformable DETR**: Sparse attention mechanisms for person detection
+- **Harmony4D Dataset**: 250GB dataset of close human interactions
+- **Brazilian Jiu-Jitsu Positions Dataset**: BJJ-specific combat position labels
+- **PyTorch**: Deep learning framework for model training and fine-tuning
+
+## What I Learned
+
+This was my first deep dive into computer vision for sports analytics. I learned how to adapt state-of-the-art models to domain-specific problems and handle massive datasets with limited computational resources.
+
+Fine-tuning transformer models taught me about the importance of dataset quality over quantity - the Harmony4D dataset's focus on close interactions was crucial for our grappling use case.
+
+Working with limited documentation forced me to become more self-sufficient in debugging complex ML pipelines and understanding model architectures from source code.
+
+## Future Work
+
+The foundation is solid for completing the full pipeline. Next steps include:
+- Completing the temporal tracking module for consistent athlete identification
+- Implementing the combat position classifier using the BJJ positions dataset  
+- Integrating the rule-based scoring system
+- Scaling training to the full Harmony4D dataset for improved accuracy
+
+## Impact
+
+This project demonstrates the potential for AI to make sports more objective and fair. Beyond competition, automated scoring provides athletes with valuable tools for self-evaluation during training, helping them understand position control and timing.
+
+The work represents an important step in sports analytics, showing how computer vision can accurately understand and evaluate complex human interactions in athletic contexts.
