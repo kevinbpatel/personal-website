@@ -101,6 +101,31 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
+        company: "The Game of Social Life",
+        timeframe: "Oct. 2024 - Apr. 2025",
+        role: "Game Development Lead",
+        achievements: [
+          <>
+            Created character poses and digital artwork assets for an online educational game focused on social justice themes
+          </>,
+          <>
+            Participated in weekly development meetings discussing UI/UX design and user interface elements
+          </>,
+          <>
+            Provided input on visual design decisions and user experience considerations during team collaborations
+          </>,
+        ],
+        images: [
+          // optional: leave the array empty if you don't want to display images
+          // {
+          //   src: "/images/projects/mathmatize/landing-page.png",
+          //   alt: "Once UI Project",
+          //   width: 16,
+          //   height: 9,
+          // },
+        ],
+      },
+      {
         company: "MathMatize",
         timeframe: "Oct. 2021 - Mar. 2022",
         role: "Front-End Developer",
@@ -109,7 +134,7 @@ const about = {
             Developed and designed landing pages and mockups for Mathmatize, an educational platform used by tens of thousands of students and incorporated into hundreds of classrooms across North America
           </>,
           <>
-            Quickly learned HTML and CSS to develop and launch responsive landing pages under tight deadlines, while balancing academic responsibilities.
+            Quickly learned HTML and CSS to develop and launch responsive landing pages under tight deadlines, while balancing academic responsibilities
           </>,
         ],
         images: [
