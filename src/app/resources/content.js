@@ -66,7 +66,7 @@ const home = {
       Front-End Developer. Brampton, Ontario
     </>
   ),
-};
+}; 
 
 const about = {
   path: "/about",
