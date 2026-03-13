@@ -1,21 +1,10 @@
-import {
-  Avatar,
-  Button,
-  Column,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  SmartImage,
-  Tag,
-  Text,
-} from "@/once-ui/components";
+import Image from "next/image";
 import { baseURL } from "@/app/resources";
-import TableOfContents from "@/components/about/TableOfContents";
-import styles from "@/components/about/about.module.scss";
 import { person, about, social } from "@/app/resources/content";
-import React from "react";
-import { Meta, Schema } from "@/once-ui/modules";
+import { Meta } from "@/components/seo/Meta";
+import { Schema } from "@/components/seo/Schema";
+import { FaGithub, FaLinkedinIn, FaEnvelope } from "react-icons/fa6";
+import { FadeIn } from "@/components/animations/FadeIn";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -27,31 +16,15 @@ export async function generateMetadata() {
   });
 }
 
+const iconMap: Record<string, React.ReactNode> = {
+  GitHub: <FaGithub className="w-3.5 h-3.5" />,
+  LinkedIn: <FaLinkedinIn className="w-3.5 h-3.5" />,
+  Email: <FaEnvelope className="w-3.5 h-3.5" />,
+};
+
 export default function About() {
-  const structure = [
-    {
-      title: about.intro.title,
-      display: about.intro.display,
-      items: [],
-    },
-    {
-      title: about.work.title,
-      display: about.work.display,
-      items: about.work.experiences.map((experience) => experience.company),
-    },
-    {
-      title: about.studies.title,
-      display: about.studies.display,
-      items: about.studies.institutions.map((institution) => institution.name),
-    },
-    {
-      title: about.technical.title,
-      display: about.technical.display,
-      items: about.technical.skills.map((skill) => skill.title),
-    },
-  ];
   return (
-    <Column maxWidth="m">
+    <div>
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -64,258 +37,142 @@ export default function About() {
           url: `${baseURL}${about.path}`,
           image: `${baseURL}${person.avatar}`,
         }}
+        social={social}
       />
-      {about.tableOfContent.display && (
-        <Column
-          left="0"
-          style={{ top: "50%", transform: "translateY(-50%)" }}
-          position="fixed"
-          paddingLeft="24"
-          gap="32"
-          hide="s"
-        >
-          <TableOfContents structure={structure} about={about} />
-        </Column>
-      )}
-      <Flex fillWidth mobileDirection="column" horizontal="center">
-        {about.avatar.display && (
-          <Column
-            className={styles.avatar}
-            position="sticky"
-            minWidth="160"
-            paddingX="l"
-            paddingBottom="xl"
-            gap="m"
-            flex={3}
-            horizontal="center"
-          >
-            <Avatar src={person.avatar} size="xl" />
-            <Flex gap="8" vertical="center">
-              <Icon onBackground="accent-weak" name="globe" />
-              {person.location}
-            </Flex>
-            {person.languages.length > 0 && (
-              <Flex wrap gap="8">
-                {person.languages.map((language, index) => (
-                  <Tag key={language} size="l">
-                    {language}
-                  </Tag>
-                ))}
-              </Flex>
-            )}
-          </Column>
-        )}
-        <Column className={styles.blockAlign} flex={9} maxWidth={40}>
-          <Column
-            id={about.intro.title}
-            fillWidth
-            minHeight="160"
-            vertical="center"
-            marginBottom="32"
-          >
-            {about.calendar.display && (
-              <Flex
-                fitWidth
-                border="brand-alpha-medium"
-                className={styles.blockAlign}
-                style={{
-                  backdropFilter: "blur(var(--static-space-1))",
-                }}
-                background="brand-alpha-weak"
-                radius="full"
-                padding="4"
-                gap="8"
-                marginBottom="m"
-                vertical="center"
-              >
-                <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
-                <Flex paddingX="8">Schedule a call</Flex>
-                <IconButton
-                  href={about.calendar.link}
-                  data-border="rounded"
-                  variant="secondary"
-                  icon="chevronRight"
-                />
-              </Flex>
-            )}
-            <Heading className={styles.textAlign} variant="display-strong-xl">
+
+      {/* ── Editorial Header ── */}
+      <FadeIn>
+        <div className="flex items-center gap-5 mb-6">
+          <Image
+            src={person.avatar}
+            alt={person.name}
+            width={56}
+            height={56}
+            className="rounded-full shrink-0"
+            style={{
+              boxShadow: "0 0 20px 5px rgba(142,197,255,0.08)",
+            }}
+          />
+          <div>
+            <h1 className="text-2xl font-display font-normal tracking-[-0.02em] text-white">
               {person.name}
-            </Heading>
-            <Text
-              className={styles.textAlign}
-              variant="display-default-xs"
-              onBackground="neutral-weak"
-            >
+            </h1>
+            <p className="text-text-tertiary text-[12px] font-mono tracking-widest uppercase">
               {person.role}
-            </Text>
-            {social.length > 0 && (
-              <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap horizontal="center" fitWidth data-border="rounded">
-                {social.map(
-                  (item) =>
-                    item.link && (
-                        <React.Fragment key={item.name}>
-                            <Button
-                                className="s-flex-hide"
-                                key={item.name}
-                                href={item.link}
-                                prefixIcon={item.icon}
-                                label={item.name}
-                                size="s"
-                                variant="secondary"
-                            />
-                            <IconButton
-                                className="s-flex-show"
-                                size="l"
-                                key={`${item.name}-icon`}
-                                href={item.link}
-                                icon={item.icon}
-                                variant="secondary"
-                            />
-                        </React.Fragment>
-                    ),
-                )}
-              </Flex>
-            )}
-          </Column>
+            </p>
+          </div>
+        </div>
+      </FadeIn>
 
-          {about.intro.display && (
-            <Column textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
-              {about.intro.description}
-            </Column>
-          )}
+      {/* ── Narrative Intro ── */}
+      {about.intro.display && (
+        <FadeIn delay={0.1}>
+          <p className="text-text-secondary text-[15px] leading-[1.8] max-w-xl mb-12">
+            {about.intro.description}
+          </p>
+        </FadeIn>
+      )}
 
-          {about.work.display && (
-            <>
-              <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
-                {about.work.title}
-              </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
-                {about.work.experiences.map((experience, index) => (
-                  <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
-                    <Flex fillWidth horizontal="space-between" vertical="end" marginBottom="4">
-                      <Text id={experience.company} variant="heading-strong-l">
-                        {experience.company}
-                      </Text>
-                      <Text variant="heading-default-xs" onBackground="neutral-weak">
-                        {experience.timeframe}
-                      </Text>
-                    </Flex>
-                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
-                      {experience.role}
-                    </Text>
-                    <Column as="ul" gap="16">
-                      {experience.achievements.map((achievement: JSX.Element, index: number) => (
-                        <Text
-                          as="li"
-                          variant="body-default-m"
-                          key={`${experience.company}-${index}`}
+      {/* ── Experience ── */}
+      {about.work.display && (
+        <FadeIn delay={0.2}>
+          <section className="mb-12">
+            <h2 className="text-[11px] tracking-[0.1em] uppercase text-text-tertiary font-mono mb-6">
+              Experience
+            </h2>
+            <div className="space-y-6">
+              {about.work.experiences.map((exp, i) => (
+                <div
+                  key={`${exp.company}-${i}`}
+                  className="group relative pl-4 border-l border-border/60 hover:border-accent/30 transition-colors duration-300"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
+                    <h3 className="font-display font-normal text-text-primary tracking-[-0.01em]">
+                      {exp.company}
+                    </h3>
+                    <span className="text-text-tertiary text-[11px] font-mono tracking-wide shrink-0">
+                      {exp.timeframe}
+                    </span>
+                  </div>
+                  <p className="text-accent/60 text-[13px] mt-0.5">
+                    {exp.role}
+                  </p>
+                  {exp.images.length > 0 && (
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      {exp.images.map((img, j) => (
+                        <div
+                          key={j}
+                          className="rounded-lg overflow-hidden border border-border/40"
                         >
-                          {achievement}
-                        </Text>
+                          <Image
+                            src={img.src}
+                            alt={img.alt}
+                            width={320}
+                            height={180}
+                            className="w-full max-w-[280px] h-auto"
+                          />
+                        </div>
                       ))}
-                    </Column>
-                    {experience.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
-                        {experience.images.map((image, index) => (
-                          <Flex
-                            key={index}
-                            border="neutral-medium"
-                            radius="m"
-                            //@ts-ignore
-                            minWidth={image.width}
-                            //@ts-ignore
-                            height={image.height}
-                          >
-                            <SmartImage
-                              enlarge
-                              radius="m"
-                              //@ts-ignore
-                              sizes={image.width.toString()}
-                              //@ts-ignore
-                              alt={image.alt}
-                              //@ts-ignore
-                              src={image.src}
-                            />
-                          </Flex>
-                        ))}
-                      </Flex>
-                    )}
-                  </Column>
-                ))}
-              </Column>
-            </>
-          )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </FadeIn>
+      )}
 
-          {about.studies.display && (
-            <>
-              <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
-                {about.studies.title}
-              </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
-                {about.studies.institutions.map((institution, index) => (
-                  <Column key={`${institution.name}-${index}`} fillWidth gap="4">
-                    <Text id={institution.name} variant="heading-strong-l">
-                      {institution.name}
-                    </Text>
-                    <Text variant="heading-default-xs" onBackground="neutral-weak">
-                      {institution.description}
-                    </Text>
-                  </Column>
-                ))}
-              </Column>
-            </>
-          )}
+      {/* ── Education ── */}
+      {about.studies.display && (
+        <FadeIn delay={0.3}>
+          <section className="mb-12">
+            <h2 className="text-[11px] tracking-[0.1em] uppercase text-text-tertiary font-mono mb-6">
+              Education
+            </h2>
+            <div className="space-y-3">
+              {about.studies.institutions.map((inst, i) => (
+                <div
+                  key={`${inst.name}-${i}`}
+                  className="pl-4 border-l border-border/60"
+                >
+                  <h3 className="font-display font-normal text-text-primary tracking-[-0.01em]">
+                    {inst.name}
+                  </h3>
+                  <p className="text-text-secondary text-[13px] mt-0.5">
+                    {inst.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </FadeIn>
+      )}
 
-          {about.technical.display && (
-            <>
-              <Heading
-                as="h2"
-                id={about.technical.title}
-                variant="display-strong-s"
-                marginBottom="40"
-              >
-                {about.technical.title}
-              </Heading>
-              <Column fillWidth gap="l">
-                {about.technical.skills.map((skill, index) => (
-                  <Column key={`${skill}-${index}`} fillWidth gap="4">
-                    <Text variant="heading-strong-l">{skill.title}</Text>
-                    <Text variant="body-default-m" onBackground="neutral-weak">
-                      {skill.description}
-                    </Text>
-                    {skill.images && skill.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" gap="12" wrap>
-                        {skill.images.map((image, index) => (
-                          <Flex
-                            key={index}
-                            border="neutral-medium"
-                            radius="m"
-                            //@ts-ignore
-                            minWidth={image.width}
-                            //@ts-ignore
-                            height={image.height}
-                          >
-                            <SmartImage
-                              enlarge
-                              radius="m"
-                              //@ts-ignore
-                              sizes={image.width.toString()}
-                              //@ts-ignore
-                              alt={image.alt}
-                              //@ts-ignore
-                              src={image.src}
-                            />
-                          </Flex>
-                        ))}
-                      </Flex>
-                    )}
-                  </Column>
-                ))}
-              </Column>
-            </>
-          )}
-        </Column>
-      </Flex>
-    </Column>
+      {/* ── Connect ── */}
+      <FadeIn delay={0.4}>
+        <section>
+          <h2 className="text-[11px] tracking-[0.1em] uppercase text-text-tertiary font-mono mb-4">
+            Connect
+          </h2>
+          <div className="flex items-center gap-3">
+            {social
+              .filter((s) => s.link)
+              .map((s) => (
+                <a
+                  key={s.name}
+                  href={s.link}
+                  target={s.name === "Email" ? undefined : "_blank"}
+                  rel={s.name === "Email" ? undefined : "noopener noreferrer"}
+                  className="flex items-center gap-2 text-text-tertiary hover:text-accent text-[13px] transition-colors duration-200"
+                  aria-label={s.name}
+                >
+                  {iconMap[s.name] ?? null}
+                  <span>{s.name}</span>
+                </a>
+              ))}
+          </div>
+        </section>
+      </FadeIn>
+    </div>
   );
 }

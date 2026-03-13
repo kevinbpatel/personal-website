@@ -1,19 +1,19 @@
 import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/mdx";
+import Image from "next/image";
+import Link from "next/link";
 import { getPosts } from "@/app/utils/utils";
-import { AvatarGroup, Button, Column, Flex, Heading, SmartImage, Text } from "@/once-ui/components";
 import { baseURL } from "@/app/resources";
 import { about, person, work } from "@/app/resources/content";
 import { formatDate } from "@/app/utils/formatDate";
-import ScrollToHash from "@/components/ScrollToHash";
+import { CustomMDX } from "@/components/mdx/MDXComponents";
+import { Meta } from "@/components/seo/Meta";
+import { Schema } from "@/components/seo/Schema";
 import { Metadata } from "next";
-import { Meta, Schema } from "@/once-ui/modules";
+import { FaArrowLeft, FaGithub } from "react-icons/fa6";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = getPosts(["src", "app", "work", "projects"]);
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -22,41 +22,46 @@ export async function generateMetadata({
   params: Promise<{ slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const slugPath = Array.isArray(routeParams.slug)
+    ? routeParams.slug.join("/")
+    : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "work", "projects"])
-  let post = posts.find((post) => post.slug === slugPath);
-
+  const post = getPosts(["src", "app", "work", "projects"]).find(
+    (p) => p.slug === slugPath
+  );
   if (!post) return {};
 
   return Meta.generate({
     title: post.metadata.title,
     description: post.metadata.summary,
     baseURL: baseURL,
-    image: post.metadata.image ? `${baseURL}${post.metadata.image}` : `${baseURL}/og?title=${post.metadata.title}`,
+    image: post.metadata.image
+      ? `${baseURL}${post.metadata.image}`
+      : `${baseURL}/og?title=${post.metadata.title}`,
     path: `${work.path}/${post.slug}`,
   });
 }
 
 export default async function Project({
-  params
-}: { params: Promise<{ slug: string | string[] }> }) {
+  params,
+}: {
+  params: Promise<{ slug: string | string[] }>;
+}) {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join('/') : routeParams.slug || '';
+  const slugPath = Array.isArray(routeParams.slug)
+    ? routeParams.slug.join("/")
+    : routeParams.slug || "";
 
-  let post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
+  const post = getPosts(["src", "app", "work", "projects"]).find(
+    (p) => p.slug === slugPath
+  );
 
   if (!post) {
     notFound();
   }
 
-  const avatars =
-    post.metadata.team?.map((person) => ({
-      src: person.avatar,
-    })) || [];
-
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="l">
+    <div className="max-w-2xl mx-auto">
       <Schema
         as="blogPosting"
         baseURL={baseURL}
@@ -72,31 +77,54 @@ export default async function Project({
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column maxWidth="xs" gap="16">
-        <Button data-border="rounded" href="/work" variant="tertiary" weight="default" size="s" prefixIcon="chevronLeft">
-          Projects
-        </Button>
-        <Heading variant="display-strong-s">{post.metadata.title}</Heading>
-      </Column>
+
+      <Link
+        href="/work"
+        className="inline-flex items-center gap-2 text-text-tertiary hover:text-text-secondary text-sm transition-colors mb-6 group"
+      >
+        <FaArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
+        Projects
+      </Link>
+
+      <h1 className="text-3xl sm:text-4xl font-display font-light tracking-[-0.02em] text-accent mb-2 leading-tight">
+        {post.metadata.title}
+      </h1>
+
+      <div className="flex items-center gap-4 mb-8">
+        {post.metadata.publishedAt && (
+          <time className="text-text-tertiary text-sm font-mono">
+            {formatDate(post.metadata.publishedAt)}
+          </time>
+        )}
+        {post.metadata.link && (
+          <a
+            href={post.metadata.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 bg-blue hover:bg-blue-hover text-white text-sm font-medium px-3.5 py-1.5 rounded-md transition-colors duration-200"
+          >
+            <FaGithub className="w-3.5 h-3.5" />
+            View project
+          </a>
+        )}
+      </div>
+
       {post.metadata.images.length > 0 && (
-        <SmartImage
-          priority
-          aspectRatio="16 / 9"
-          radius="m"
-          alt="image"
-          src={post.metadata.images[0]}
-        />
+        <div className="rounded-lg overflow-hidden border border-border/60 mb-12">
+          <Image
+            src={post.metadata.images[0]}
+            alt={post.metadata.title}
+            width={960}
+            height={540}
+            className="w-full h-auto"
+            priority
+          />
+        </div>
       )}
-      <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
-        <Flex gap="12" marginBottom="24" vertical="center">
-          {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="m" />}
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
-          </Text>
-        </Flex>
+
+      <article>
         <CustomMDX source={post.content} />
-      </Column>
-      <ScrollToHash />
-    </Column>
+      </article>
+    </div>
   );
 }
