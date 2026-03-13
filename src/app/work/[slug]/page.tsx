@@ -101,7 +101,7 @@ export default async function Project({
             href={post.metadata.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-blue hover:bg-blue-hover text-white text-sm font-medium px-3.5 py-1.5 rounded-md transition-colors duration-200"
+            className="inline-flex items-center gap-1.5 text-text-tertiary hover:text-accent text-sm transition-colors duration-200"
           >
             <FaGithub className="w-3.5 h-3.5" />
             View project

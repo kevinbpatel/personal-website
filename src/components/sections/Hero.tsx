@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { FaGithub, FaGitlab, FaLinkedinIn, FaBluesky, FaMastodon, FaEnvelope } from "react-icons/fa6";
 import { person, social } from "@/app/resources/content";
 
@@ -15,26 +13,18 @@ const iconMap: Record<string, React.ReactNode> = {
   Email: <FaEnvelope />,
 };
 
-const ease = [0.25, 0.1, 0.25, 1] as const;
-
-function SocialLink({ item }: { item: (typeof social)[number] }) {
-  const [hovered, setHovered] = useState(false);
+function SocialLink({ item, index }: { item: (typeof social)[number]; index: number }) {
   return (
-    <motion.a
+    <a
       href={item.link}
       target={item.name === "Email" ? undefined : "_blank"}
       rel={item.name === "Email" ? undefined : "noopener noreferrer"}
       aria-label={item.name}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="text-[15px] p-2 rounded-lg transition-colors duration-200"
-      style={{
-        color: hovered ? "#8ec5ff" : "#6b6e78",
-        backgroundColor: hovered ? "rgba(142,197,255,0.08)" : "transparent",
-      }}
+      className="hero-social-link text-[17px] p-2 animate-hero-fade-in"
+      style={{ animationDelay: `${500 + index * 50}ms` }}
     >
       {iconMap[item.name]}
-    </motion.a>
+    </a>
   );
 }
 
@@ -53,11 +43,8 @@ export function Hero() {
       {/* ── Content ── */}
       <div className="relative flex flex-col items-center text-center">
         {/* The Orb */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease }}
-          className="relative mb-4"
+        <div
+          className="relative mb-4 animate-hero-scale-in"
         >
           <div className="absolute inset-[-80%] animate-glow-breathe">
             <div
@@ -82,52 +69,35 @@ export function Hero() {
               priority
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease }}
-          className="text-[2.5rem] sm:text-5xl lg:text-[3.25rem] font-display font-semibold tracking-[-0.04em] text-accent leading-[1.1] mb-1"
+        <h1
+          className="text-[2.75rem] sm:text-[3.25rem] lg:text-[3.5rem] font-display font-light tracking-[-0.03em] text-accent leading-[1.1] mb-1 animate-hero-fade-in"
+          style={{ animationDelay: "150ms" }}
         >
           {person.name}
-        </motion.h1>
+        </h1>
 
-        {/* Role & location */}
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3, ease }}
-          className="text-text-primary text-[15px] font-body tracking-[-0.01em] mb-3"
+        {/* Role & location — mono, same weight, lowercase */}
+        <p
+          className="text-text-tertiary text-[13px] font-mono tracking-[0.02em] lowercase mb-2 animate-hero-fade-in"
+          style={{ animationDelay: "300ms" }}
         >
           {person.role}
-          <span className="text-text-tertiary mx-2">·</span>
-          <span className="text-text-secondary">{person.location}</span>
-        </motion.p>
+          <span className="mx-2 text-text-tertiary/40">/</span>
+          {person.location}
+        </p>
 
         {/* Social icons */}
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.45, ease }}
-          className="flex items-center gap-0.5"
-        >
+        <div className="flex items-center gap-0.5">
           {social
             .filter((s) => s.link)
-            .map((s) => (
-              <SocialLink key={s.name} item={s} />
+            .map((s, i) => (
+              <SocialLink key={s.name} item={s} index={i} />
             ))}
-        </motion.div>
+        </div>
       </div>
-
-      {/* ── Bottom gradient line ── */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.6, ease }}
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md h-px bg-gradient-to-r from-transparent via-border to-transparent"
-      />
     </section>
   );
 }

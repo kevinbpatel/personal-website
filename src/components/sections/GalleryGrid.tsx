@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { AnimatePresence } from "framer-motion";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import { gallery } from "@/app/resources/content";
 import { FadeIn } from "@/components/animations/FadeIn";
-import { Lightbox } from "./Lightbox";
 
 export function GalleryGrid() {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
+
+  const slides = gallery.images.map((img) => ({
+    src: img.src,
+    alt: img.alt,
+  }));
 
   return (
     <>
@@ -32,23 +37,17 @@ export function GalleryGrid() {
         ))}
       </div>
 
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <Lightbox
-            images={gallery.images}
-            currentIndex={lightboxIndex}
-            onClose={() => setLightboxIndex(null)}
-            onPrev={() =>
-              setLightboxIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : prev))
-            }
-            onNext={() =>
-              setLightboxIndex((prev) =>
-                prev !== null && prev < gallery.images.length - 1 ? prev + 1 : prev
-              )
-            }
-          />
-        )}
-      </AnimatePresence>
+      <Lightbox
+        open={lightboxIndex >= 0}
+        index={lightboxIndex}
+        close={() => setLightboxIndex(-1)}
+        slides={slides}
+        styles={{
+          container: { backgroundColor: "rgba(0, 0, 0, 0.92)" },
+        }}
+        animation={{ fade: 200, swipe: 300 }}
+        controller={{ closeOnBackdropClick: true }}
+      />
     </>
   );
 }

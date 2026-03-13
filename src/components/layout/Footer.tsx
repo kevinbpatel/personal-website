@@ -17,7 +17,7 @@ export function Footer() {
         <p className="text-text-tertiary text-xs">
           &copy; {new Date().getFullYear()} {person.name}
         </p>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1">
           {social
             .filter((s) => s.link)
             .map((s) => (
@@ -26,8 +26,8 @@ export function Footer() {
                 href={s.link}
                 target={s.name === "Email" ? undefined : "_blank"}
                 rel={s.name === "Email" ? undefined : "noopener noreferrer"}
-                className="text-text-tertiary hover:text-text-secondary transition-colors duration-200"
                 aria-label={s.name}
+                className="footer-social-link p-1.5 rounded-md"
               >
                 {iconMap[s.name] ?? s.name}
               </a>

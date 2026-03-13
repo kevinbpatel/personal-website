@@ -12,7 +12,7 @@ interface ProjectCardProps {
 export function ProjectCard({ title, summary, slug, image, date }: ProjectCardProps) {
   return (
     <Link href={`/work/${slug}`} className="group block">
-      <article className="h-full rounded-lg border border-border/60 hover:border-blue/40 bg-bg-card/40 hover:bg-bg-card/70 transition-all duration-200 overflow-hidden hover:shadow-[0_0_20px_rgba(19,72,220,0.08)]">
+      <article className="h-full rounded-lg border border-border/60 hover:border-border-hover bg-bg-card/40 hover:bg-bg-card/70 transition-all duration-200 overflow-hidden">
         {image && (
           <div className="relative aspect-[16/10] overflow-hidden bg-bg-secondary">
             <Image

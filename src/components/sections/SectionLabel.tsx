@@ -11,13 +11,12 @@ interface SectionLabelProps {
 export function SectionLabel({ label, number, delay = 0 }: SectionLabelProps) {
   return (
     <FadeIn delay={delay}>
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-1.5 h-1.5 rounded-full bg-blue" />
-        <h2 className="text-xs tracking-[0.08em] uppercase text-text-tertiary font-mono">
+      <div className="mb-8">
+        <h2 className="text-sm tracking-[0.06em] uppercase text-text-tertiary font-mono mb-3">
           {number && <span className="text-text-tertiary/50 mr-2">{number}</span>}
           {label}
         </h2>
-        <div className="flex-1 h-px bg-border/60" />
+        <div className="w-full h-px bg-border/60" />
       </div>
     </FadeIn>
   );

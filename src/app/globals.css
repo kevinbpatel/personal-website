@@ -12,10 +12,6 @@
   --color-accent-hover: #b3d9ff;
   --color-accent-dim: #1a2d42;
 
-  /* Blue — strong/dark (zed CTA blue) */
-  --color-blue: #1348dc;
-  --color-blue-hover: #1a56f0;
-  --color-blue-dim: rgba(19, 72, 220, 0.12);
 
   /* Text */
   --color-text-primary: #e5e6e8;
@@ -27,7 +23,7 @@
   --color-border-hover: #3a3c44;
 
   /* Fonts */
-  --font-display: var(--font-sora), system-ui, sans-serif;
+  --font-display: var(--font-urbanist), system-ui, sans-serif;
   --font-body: var(--font-dm-sans), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
@@ -95,6 +91,31 @@
   opacity: 0.8 !important;
 }
 
+/* ── Hero social links ────────────────────────────── */
+
+.hero-social-link {
+  color: #5a5d66;
+  transition: color 100ms ease, filter 100ms ease;
+}
+
+.hero-social-link:hover {
+  color: #8ec5ff;
+  filter: drop-shadow(0 0 6px rgba(142, 197, 255, 0.4));
+}
+
+/* ── Footer social links ─────────────────────────── */
+
+.footer-social-link {
+  color: #5a5d66;
+  background-color: transparent;
+  transition: color 100ms ease, background-color 100ms ease;
+}
+
+.footer-social-link:hover {
+  color: #8ec5ff;
+  background-color: rgba(142, 197, 255, 0.08);
+}
+
 /* ── Orb animations ───────────────────────────────── */
 
 @keyframes float {
@@ -153,4 +174,79 @@
 
 @utility animate-page-enter {
   animation: page-enter 0.5s ease-out both;
+}
+
+/* ── Hero entrance animations ────────────────────── */
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility animate-hero-fade-in {
+  animation: hero-fade-in 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@utility animate-hero-scale-in {
+  animation: hero-scale-in 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+/* ── Lightbox animations ─────────────────────────── */
+
+@keyframes lightbox-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lightbox-image-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility animate-lightbox-in {
+  animation: lightbox-in 0.2s ease-out both;
+}
+
+@utility animate-lightbox-image-in {
+  animation: lightbox-image-in 0.2s ease-out both;
+}
+
+/* ── Generic fade-in-up (replaces framer-motion FadeIn) ── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(var(--fade-y, 12px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }

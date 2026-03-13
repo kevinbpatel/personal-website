@@ -1,4 +1,4 @@
-import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Urbanist, DM_Sans, JetBrains_Mono } from "next/font/google";
 
 export const baseURL = "https://kevinbpatel.com";
 
@@ -9,8 +9,8 @@ export const routes: Record<string, boolean> = {
   "/gallery": true,
 };
 
-const sora = Sora({
-  variable: "--font-sora",
+const urbanist = Urbanist({
+  variable: "--font-urbanist",
   subsets: ["latin"],
   display: "swap",
 });
@@ -28,7 +28,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const fonts = {
-  sora,
+  urbanist,
   dmSans,
   jetbrainsMono,
 };

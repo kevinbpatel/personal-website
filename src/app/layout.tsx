@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${fonts.sora.variable} ${fonts.dmSans.variable} ${fonts.jetbrainsMono.variable}`}
+      className={`${fonts.urbanist.variable} ${fonts.dmSans.variable} ${fonts.jetbrainsMono.variable}`}
     >
       <body className="relative min-h-screen flex flex-col">
         {/* Global noise texture (like zed.dev) */}
